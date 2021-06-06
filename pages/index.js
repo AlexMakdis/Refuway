@@ -1,44 +1,85 @@
-import Head from 'next/head'
-import Container from '../components/container'
-import MoreStories from '../components/more-stories'
-import HeroPost from '../components/hero-post'
-import Intro from '../components/intro'
-import Layout from '../components/layout'
-import { CMS_NAME } from '../lib/constants'
-import { indexQuery } from '../lib/queries'
-import { getClient, overlayDrafts } from '../lib/sanity.server'
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
+import { gql } from "@apollo/client";
+import client from "../apollo-client";
+import Wizard from "../components/Wizard"
+import { useState } from "react";
+import Header from "../components/Header";
 
-export default function Index({ allPosts, preview }) {
-  const heroPost = allPosts[0]
-  const morePosts = allPosts.slice(1)
+export default function Home({ questions, info }) {
+  const [dataId, setDataId] = useState('');
+  const data = info.filter(inf => inf.dataLi === dataId)[0];
+  
+  function createMarkup(data) {
+    if (data !== undefined) {
+    return {__html: data.text}
+    } else {
+      return {__html: "hey"}
+    }
+  }
   return (
     <>
-      <Layout preview={preview}>
-        <Head>
-          <title>Next.js Blog Example with {CMS_NAME}</title>
-        </Head>
-        <Container>
-          <Intro />
-          {heroPost && (
-            <HeroPost
-              title={heroPost.title}
-              coverImage={heroPost.coverImage}
-              date={heroPost.date}
-              author={heroPost.author}
-              slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
-            />
-          )}
-          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-        </Container>
-      </Layout>
+    <div className="h-screen bg-home bg-no-repeat bg-center bg-cover ">
+      <Header/>
+        <Wizard questions={questions} changeData={dataId => setDataId(dataId)}/>
+    </div>
+    <div dangerouslySetInnerHTML={createMarkup(data)}>
+         
+         </div>
+ 
     </>
-  )
+  );
 }
 
-export async function getStaticProps({ preview = false }) {
-  const allPosts = overlayDrafts(await getClient(preview).fetch(indexQuery))
+export async function getStaticProps() {
+  const { data: questions } = await client.query({
+    query: gql`
+      query Questions {
+        questions{
+              text
+              id
+              questionLi
+              answers{
+                text
+                id
+                editedOn
+                addedOn
+                nextQuestionId
+                conclusionId
+                answerLi
+                imgURL
+              }
+              imgURL
+              editedOn
+              addedOn
+              category
+            }
+                  }
+    `,
+  });
+
+  const { data: data } = await client.query({
+    query: gql`
+      query Data {
+        data{
+          id
+          text
+          title
+          description
+          imgURL
+          category
+          dataLi
+          addedOn
+          editedOn
+        }
+                  }
+    `,
+  });
+
   return {
-    props: { allPosts, preview },
-  }
+    props: {
+      questions: questions.questions,
+      info: data.data
+    },
+  };
 }
