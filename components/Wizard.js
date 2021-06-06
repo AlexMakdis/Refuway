@@ -15,7 +15,7 @@ export default function Wizard({ questions, changeData }) {
   }
   return (
     <>
-    <div className="mx-auto my-32 bg-white rounded-xl shadow-md md:max-w-2xl p-8 relative">
+    <div className="mx-auto my-32 bg-white rounded-xl shadow-md w-4/5 p-8 relative">
       <h1 className="">{question.text}</h1>
       <hr />
       <div className="flex flex-col my-6">
