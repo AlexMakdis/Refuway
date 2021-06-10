@@ -1,0 +1,28 @@
+.headPage{
+    box-shadow: 0 5px 30px rgba(31, 32, 65, 1)  ; 
+	-webkit-box-shadow: 0 5px 30px rgba(31, 32, 65, 1)  ; 
+	-moz-box-shadow: 0 5px 30px rgba(31, 32, 65, 1)  ; 
+    
+}
+
+.scrollDown{
+	width: fit-content;
+}
+
+.scrollDown p{
+	writing-mode: vertical-rl;
+}
+
+.rotate{
+	transform: rotate(180deg);
+	transition: transform 0.8s ease-in-out;
+}
+
+.dropdownTab{
+	position: relative;
+	z-index: 2;
+}
+
+.dropdownText{
+	z-index: -1;
+}

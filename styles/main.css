@@ -4,3 +4,6 @@
 
 @import "./globals.css";
 @import "./burgerNav.css";
+@import "./wizard.css";
+@import "~animate.css/animate.css";
+@import "./page.css";

@@ -1,0 +1,27 @@
+.answerButton{
+    width: fit-content;
+    
+  }
+
+.dataWizardImage {
+    width: fit-content;
+    margin-left: auto!important;
+    margin-right: auto!important;
+}
+
+.dataWizardText p {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.dataWizardText ul {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    list-style: decimal;
+    margin-left: 2rem;
+}
+
+.dataWizardText ul li{
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+}
