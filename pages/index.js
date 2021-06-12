@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import Image from "next/image";
 import { useRouter } from 'next/router';
 
+
 export default function Home({ questions, info }) {
   const [dataId, setDataId] = useState('');
   const [questionWizard, setQuestionWizard] = useState('question001')

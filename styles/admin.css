@@ -1,0 +1,11 @@
+.w-fit{
+    width: fit-content;
+}
+
+.adminIcon{
+    transition: 0.5s ease-in-out;
+}
+
+.adminCard:hover .adminIcon{
+    transform: scale(0.8);
+}

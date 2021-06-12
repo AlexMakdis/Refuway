@@ -1,9 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "~animate.css/animate.css";
 
 @import "./globals.css";
 @import "./burgerNav.css";
 @import "./wizard.css";
-@import "~animate.css/animate.css";
 @import "./page.css";
+@import "./admin.css";

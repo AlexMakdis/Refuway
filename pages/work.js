@@ -20,10 +20,10 @@ export default function Work() {
 
   return (
     <>
-    <div className="h-screen bg-work bg-fixed bg-no-repeat bg-center bg-cover ">
+    <div className="h-screen bg-work bg-fixed bg-no-repeat bg-center bg-cover overflow-y-hidden">
       <Header/>
-      <div>
-      <div className="headPage  mx-auto mt-32 rounded-xl w-4/5 p-8 overflow-hidden text-center text-white font-bold text-4xl uppercase ">
+      <div className="my-auto">
+      <div className="headPage  mx-auto rounded-xl w-4/5 p-8 overflow-hidden text-center text-white font-bold text-4xl uppercase ">
       <h1 className="">Work</h1>
       </div>
       <div onClick={() => document.querySelector('.dropdownDataContainer').scrollIntoView()} className="scrollDown mx-auto mt-28 animate__animated animate__bounce animate__infinite	infinite animate__slow cursor-pointer">
