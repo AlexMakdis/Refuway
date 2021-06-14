@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { gql } from "@apollo/client";
 import client from "../../apollo-client";
-import Header from "../../components/Header";
+import Header from "../../components/header";
 import Image from "next/image";
 import Link from 'next/link';
 import OrgImage from "../../components/OrgImage";

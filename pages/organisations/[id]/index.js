@@ -1,6 +1,6 @@
 import { withRouter } from 'next/router'
 import { useEffect, useState } from 'react';
-import Header from '../../../components/Header';
+import Header from '../../../components/header';
 import CloudImage from '../../../components/CloudImage';
 import dynamic from 'next/dynamic'
 

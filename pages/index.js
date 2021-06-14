@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import client from "../apollo-client";
 import Wizard from "../components/Wizard"
 import { useState } from "react";
-import Header from "../components/Header";
+import Header from "../components/header";
 import Image from "next/image";
 import { useRouter } from 'next/router';
 import CloudImage from "../components/CloudImage";
