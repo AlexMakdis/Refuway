@@ -1,16 +1,67 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import client from "../../../apollo-client";
-
+import { useAuth } from "../../../context";
+import Login from "../../../components/Login";
 
 import QuestionsList from '../../../components/QuestionsList';
 import Link from 'next/link';
+import { Formik, useField, Form, FieldArray, Field } from 'formik';
+import * as Yup from 'yup';
+
+const CustomTextInput = ({ label, ...props}) => {
+    const [field, meta] = useField(props);
+
+    return (
+        <>
+            <label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold" htmlFor={props.id || props.name}>{label}</label>
+            <input className="py-2 px-3 rounded-lg border-2 border-green mt-1 focus:outline-none focus:ring-2 focus:ring-green focus:border-transparent"  {...field} {...props} />
+            {meta.touched && meta.error ? (
+                <div>{meta.error}</div>
+            ) : null}
+        </>
+    )
+}
+
+const CustomSelect = ({ label, ...props}) => {
+    const [field, meta] = useField(props);
+
+    return (
+        <>
+            <label htmlFor={props.id || props.name}>{label}</label>
+            <select {...field} {...props} />
+            {meta.touched && meta.error ? (
+                <div>{meta.error}</div>
+            ) : null}
+        </>
+    )
+}
 
 export default function Questions({questions}) {
+    const [user, logout] = useAuth()
+
+    useEffect(() => {
+        if (window !== undefined && user !== undefined) {
+          const token = localStorage.getItem('token'); 
+          if ( typeof user === 'string'){
+            console.log(user)
+            if (user !== token){
+            logout();
+          }
+          }
+    
+      }
+      }, [user])
+
+
+
     const [image, setImage ] = useState("");
     const [ url, setUrl ] = useState("");
+    const [ loading1, setLoading1 ] = useState("Upload");
+
     const uploadImage = () => {
+    setLoading1("Loading...")
     const data = new FormData()
     data.append("file", image)
     data.append("upload_preset", "refuway")
@@ -22,10 +73,10 @@ export default function Questions({questions}) {
     .then(resp => resp.json())
     .then(data => {
     setImgURL(data.public_id)
+    setLoading1("Uploaded")
     })
     .catch(err => console.log("err"))
     }
-
 
 
     const [text1, setText] = useState('');
@@ -33,56 +84,119 @@ export default function Questions({questions}) {
     const [imgURL1, setImgURL] = useState('');
     const [category1, setCategory] = useState('');
     const [prevQuestionLi1, setPrevQuestionLi] = useState('');
-    const [answers1, setAnswers1] = useState('');
-
+    const [answers1, setAnswers1] = useState(["test", "test2"]);
 
     const ADD = gql`
-    mutation addQuestion($text: String!, $questionLi: String!, $imgURL: String!, $prevQuestionLi: String!) {
-    addQuestion(question:{text: $text, questionLi: $questionLi, imgURL: $imgURL, prevQuestionLi: $prevQuestionLi}){
+
+    mutation addQuestion($text: String!, $questionLi: String!, $imgURL: String!, $prevQuestionLi: String!, $answers: [AnswerInput!]) {
+    addQuestion(question:{text: $text, questionLi: $questionLi, imgURL: $imgURL, prevQuestionLi: $prevQuestionLi, answers: $answers}){
     id text questionLi imgURL prevQuestionLi addedOn editedOn 
     }}
     `;
 
-    const [addItem] = useMutation(ADD);
+    const [addItem, { loading, error, data }] = useMutation(ADD);
+
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            if(data) {
+                alert("New question has been added")
+              }
+              } else {
+                  console.log('Server');
+              }
+        
+      }, [data]);
 
   return (
     <>
-        <div className="w-fit mx-auto">
-            <Link href='/' passHref>
-                <a>
-                <Image
-                    src="/logo.png"
-                    alt="logo"
-                    width={400}
-                    height={150}
-                />
-                </a>
-            </Link>
-            </div>
-            <div className="mx-auto my-10 w-fit text-center">
-            <h1 className="text-2xl">All questions of the wizard</h1>
-            <p>Choose a question to edit.</p>
-            </div>
-            <QuestionsList questions={questions} />
-            <div className="mx-auto mt-10 w-fit text-center">
-                <p>Do you want to add a question?</p>
-            </div>
-            <div className="flex items-center justify-center  mt-2 mb-32">
-                <form className="grid bg-white rounded-lg shadow-xl w-11/12 md:w-9/12 lg:w-1/2" onSubmit={e=> {
-                            e.preventDefault();
-                            addItem({ variables: { text: text1, questionLi: questionLi1, imgURL: imgURL1,
-                                prevQuestionLi: prevQuestionLi1
-                            } });
-                            }}>
-                    <div className="flex justify-center py-4">
-                    <div className="flex bg-green rounded-full md:p-4 p-2 border-2 border-green">
-                        <Image 
-                            src="/icons/wizardAdmin1.svg"
-                            alt="logo"
-                            width={40}
-                            height={40}
-                        />
-                    </div>
+    {!user && <Login />}
+    {user && <>
+      <Formik
+        initialValues={
+            {
+                text: "",
+                questionLi:"",
+                prevQuestionLi:"",
+                answers: [{
+                    text: "",
+                    answerLi:"",
+                    nextQuestionId: "",
+                    conclusionId: ""
+                },
+                {
+                    text: "",
+                    answerLi:"",
+                    nextQuestionId: "",
+                    conclusionId: ""
+                }
+            ]
+            }
+        }
+        validationSchema={Yup.object({
+            text: Yup.string(),
+            questionLi: Yup.string(),
+            prevQuestionLi1: Yup.string(),
+            answers: Yup.array(
+                Yup.object({
+                text: Yup.string(),
+                answerLi: Yup.string(),
+                nextQuestionId: Yup.string(),
+                conclusionId: Yup.string()
+                }),
+                Yup.object({
+                text: Yup.string(),
+                answerLi: Yup.string(),
+                nextQuestionId: Yup.string(),
+                conclusionId: Yup.string()
+                    })
+                )
+        })}
+        onSubmit={(values, { setSubmitting, resetForm }) =>{
+            setTimeout(() => {
+
+                addItem({ variables: { text: values.text, questionLi: values.questionLi, imgURL: imgURL1,
+                    prevQuestionLi: values.prevQuestionLi, answers: values.answers
+                } });
+                resetForm();
+                setSubmitting(false);
+                // window.location.reload();
+            }, 3000)
+        }}
+      >
+          {props => (
+              <>
+              <div className="w-fit mx-auto">
+              <Link href='/' passHref>
+                  <a>
+                  <Image
+                      src="/logo.png"
+                      alt="logo"
+                      width={400}
+                      height={150}
+                  />
+                  </a>
+              </Link>
+              </div>
+              <div className="mx-auto my-10 w-fit text-center">
+              <h1 className="text-2xl">All questions of the wizard</h1>
+              <p>Choose a question to edit.</p>
+              </div>
+              <QuestionsList questions={questions} />
+              <div className="mx-auto mt-10 w-fit text-center">
+                  <p>Do you want to add a question?</p>
+              </div>
+              <div className="flex items-center justify-center  mt-2 mb-32"> 
+              <Form>
+              <div className="flex justify-center py-4">
+                        <div className="flex bg-green rounded-full md:p-4 p-2 border-2 border-green">
+                            <Image 
+                                src="/icons/wizardAdmin1.svg"
+                                alt="logo"
+                                width={40}
+                                height={40}
+                            />
+                        </div>
                     </div>
 
                     <div className="flex justify-center">
@@ -90,37 +204,35 @@ export default function Questions({questions}) {
                         <h1 className="text-gray-600 font-bold md:text-2xl text-xl">Create a Question</h1>
                     </div>
                     </div>
-
                     <div className="grid grid-cols-1 mt-5 mx-7">
-                    <label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">Question</label>
-                    <input onChange={e=> setText(e.target.value)} className="py-2 px-3 rounded-lg border-2 border-green mt-1 focus:outline-none focus:ring-2 focus:ring-green focus:border-transparent" type="text" placeholder="Input 1" />
+                    <CustomTextInput  label="Question" name="text" placeholder="What is the Question?" />
                     </div>
-
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mt-5 mx-7">
                     <div className="grid grid-cols-1">
-                        <label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">Question Number</label>
-                        <input onChange={e=> setQuestionLi(e.target.value)} className="py-2 px-3 rounded-lg border-2 border-green mt-1 focus:outline-none focus:ring-2 focus:ring-green focus:border-transparent" type="text" placeholder="Input 2" />
+                    <CustomTextInput label="Question number" name="questionLi" placeholder="question002" />
                     </div>
                     <div className="grid grid-cols-1">
-                        <label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">Previous Question Number</label>
-                        <input onChange={e=> setPrevQuestionLi(e.target.value)} className="py-2 px-3 rounded-lg border-2 border-green mt-1 focus:outline-none focus:ring-2 focus:ring-green focus:border-transparent" type="text" placeholder="Input 3" />
+                    <CustomTextInput label="Previous question number" name="prevQuestionLi" placeholder="question001" />
                     </div>
                     </div>
-
-                    {/* <div className="grid grid-cols-1 mt-5 mx-7">
-                    <label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">Category</label>
-                    <select className="py-2 px-3 rounded-lg border-2 border-green mt-1 focus:outline-none focus:ring-2 focus:ring-green focus:border-transparent">
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                        <option>Option 3</option>
-                    </select>
-                    </div> */}
-{/* 
-                    <div className="grid grid-cols-1 mt-5 mx-7">
-                    <label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">Answers</label>
-                    <input className="py-2 px-3 rounded-lg border-2 border-green mt-1 focus:outline-none focus:ring-2 focus:ring-green focus:border-transparent" type="text" placeholder="Another Input" />
-                    </div> */}
-
+                    <div className="text-center uppercase md:text-sm text-xs text-gray-500 text-light font-semibold my-2"><h1>Answers</h1></div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mt-5 mx-7">
+                            <FieldArray 
+                                name="answers"
+                                render={arrayHelpers => (
+                                    <>
+                                    {answers1.map((answer, index) => (
+                                    <div className="grid grid-cols-1" key={index}>
+                                        <CustomTextInput label={`Answer ${index}`} name={`answers[${index}].text`} placeholder="Answer" />
+                                        <CustomTextInput label={`Answer number`} name={`answers.[${index}].answerLi`} placeholder="answer001" />
+                                        <CustomTextInput label={`Next Question Id`} name={`answers.[${index}].nextQuestionId`} placeholder="question001" />
+                                        <CustomTextInput label={`Conclusion Id`} name={`answers.[${index}].conclusionId`} placeholder="data001" />
+                                    </div>
+                                    ))}
+                                    </>
+                                )}
+                            />
+                        </div>
                     <div className="grid grid-cols-1 mt-5 mx-7">
                     <label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold mb-1">Upload Photo</label>
                         <div className='flex items-center justify-center w-full'>
@@ -136,15 +248,17 @@ export default function Questions({questions}) {
                             </label>
                             
                         </div>
-                        <button type="button" onClick={uploadImage}>Upload</button>
+                        <button type="button" onClick={uploadImage}>{loading1}</button>
                     </div>
-
                     <div className='flex items-center justify-center  md:gap-8 gap-4 pt-5 pb-5'>
-                    <button className='w-auto bg-green hover:bg-green rounded-lg shadow-xl font-medium text-white px-4 py-2'>Create</button>
+                        <button type="submit" className='w-auto bg-green hover:bg-blue duration-500 rounded-lg shadow-xl font-medium text-white px-4 py-2'>{props.isSubmitting ? 'Loading....' : 'Create'}</button>
                     </div>
-
-                </form>
-            </div>
+              </Form>
+              </div>
+              </>
+          )}
+      </Formik>
+      </>}
     </>
   );
 }

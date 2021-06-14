@@ -21,7 +21,12 @@
     margin-left: 2rem;
 }
 
-.dataWizardText ul li{
+.dataWizardText ul li, .dataWizardText ol li{
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;
 }
+
+.dataWizardText a{
+    text-decoration: underline;
+}
+

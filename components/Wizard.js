@@ -46,6 +46,8 @@ export default function Wizard({ questions, changeData, questionLi }) {
   }
   return (
     <>
+    {question ?
+    <>
       <h1 id="questions" className="text-2xl font-bold text-blue animate__animated animate__fadeInDown">{question.text}</h1>
       <hr />
       <div id="answers" className="flex flex-col mt-6 animate__animated animate__fadeInLeft">
@@ -70,6 +72,12 @@ export default function Wizard({ questions, changeData, questionLi }) {
         <></>
       }
       <img className="w-6 absolute top-2 right-5" src="./icons/wizard.svg" />
+      </>
+      : <>
+      <h1 className="text-2xl font-bold text-blue">No further questions</h1>
+      <button onClick={() => previousButton("question001")} className="bg-green hover:bg-blue duration-500 mt-6 px-4 py-2 rounded-full text-white flex font-semibold items-center focus:outline-none text-sm animate__animated animate__fadeInUp">Go to the start</button>
+
+      </>}
     </>
   );
 }

@@ -4,17 +4,16 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 
 
-export default function QuestionItem({question}) {
-    
+export default function OrganisationItem({organisation}) {
     const DELETE = gql`
-    mutation deleteQuestion($id: ID!){deleteQuestion(questionId: $id){text}}
+    mutation deleteOrganisation($id: ID!){deleteOrganisation(organisationId: $id){text}}
     `
-    const [deleteItem, { loading, error, data }] = useMutation(DELETE);
+    const [deleteItem, {loading, error, data}] = useMutation(DELETE);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
             if(data) {
-                alert("Question has been deleted")
+                alert("Organisation has been deleted")
               }
               } else {
                   console.log('Server');
@@ -25,15 +24,15 @@ export default function QuestionItem({question}) {
   return (
     <>
     <div className="py-4 relative">
-    <Link href="/admin/questions/[id]" as={`/admin/questions/${question.id}`}>
+    <Link href="/admin/organisations/[id]" as={`/admin/organisations/${organisation.id}`}>
         <div className="adminCard p-8 overflow-hidden relative text-center shadow-md rounded-xl font-bold text-xs hover:bg-green hover:text-white transition duration-500 ease-in-out cursor-pointer">
-                <p className="my-4">{question.questionLi}</p>
-                <h1>{question.text}</h1>
+                <p className="my-4">{organisation.organisationLi}</p>
+                <h1>{organisation.title}</h1>
         </div>
     </Link>
         <form className="absolute -top-1 right-0" onSubmit={e=> {
             e.preventDefault();
-            deleteItem({ variables: { id: question.id } });
+            deleteItem({ variables: { id: organisation.id } });
             }}
             >
         <button type="submit">

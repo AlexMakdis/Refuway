@@ -1,13 +1,31 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import Login from "../../components/Login";
+import { useAuth } from "../../context";
 
 
 export default function Admin() {
+  const [user, logout] = useAuth()
+  
+  useEffect(() => {
+    if (window !== undefined && user !== undefined) {
+      const token = localStorage.getItem('token'); 
+      if ( typeof user === 'string'){
+        console.log(user)
+        if (user !== token){
+        logout();
+      }
+      }
 
+  }
+  }, [user])
 
   return (
     <>
-        <div className="w-fit mx-auto">
+    {!user && <Login />}
+    {user && <>
+      <div className="w-fit mx-auto">
           <Link href='/' passHref>
               <a>
               <Image
@@ -77,6 +95,7 @@ export default function Admin() {
             </button>
           </Link>
         </div>
+    </>}
     </>
   );
 }

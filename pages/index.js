@@ -5,7 +5,7 @@ import { useState } from "react";
 import Header from "../components/Header";
 import Image from "next/image";
 import { useRouter } from 'next/router';
-
+import CloudImage from "../components/CloudImage";
 
 export default function Home({ questions, info }) {
   const [dataId, setDataId] = useState('');
@@ -37,13 +37,7 @@ export default function Home({ questions, info }) {
             </div>
             { data.imgURL !== undefined ? 
               <div className="dataWizardImage">
-                {/* <Image 
-                  src={data.imgURL}
-                  alt="logo"
-                  width={300}
-                  height={200}
-                  className="rounded"
-                /> */}
+                <CloudImage publicId={data.imgURL} />
               </div> : console.log('No Image')}
             </div>
             { data.text !== undefined ? 

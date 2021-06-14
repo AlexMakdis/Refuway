@@ -1,8 +1,8 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { gql } from "@apollo/client";
-import client from "../apollo-client";
-import Header from "../components/Header";
+import client from "../../apollo-client";
+import Header from "../../components/Header";
 import Image from "next/image";
 
 export default function Organisations() {

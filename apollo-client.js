@@ -9,7 +9,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 
 // const tokenFromLocalStorage = localStorage.getItem('token')
 // const token = tokenFromLocalStorage;
-const token = "test"
+// const token = "test"
 // create the http link for the API
 const httpLink = new HttpLink({
   uri:
@@ -45,17 +45,17 @@ const authLink = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
-const splitLink = split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition' &&
-      definition.operation === 'subscription'
-    );
-  },
-  // wsLink,
-  authLink.concat(httpLink),
-);
+// const splitLink = split(
+//   ({ query }) => {
+//     const definition = getMainDefinition(query);
+//     return (
+//       definition.kind === 'OperationDefinition' &&
+//       definition.operation === 'subscription'
+//     );
+//   },
+//   // wsLink,
+//   authLink.concat(httpLink),
+// );
 
 // init apolloclient
 const client = new ApolloClient({
