@@ -60,7 +60,7 @@ const authLink = new ApolloLink((operation, forward) => {
 // init apolloclient
 const client = new ApolloClient({
   // link: splitLink,
-  uri: 'http://localhost:4000',
+  uri: 'https://sockdata.herokuapp.com/',
   cache: new InMemoryCache(),
 });
 

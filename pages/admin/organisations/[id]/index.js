@@ -48,7 +48,6 @@ export default function Organisation({}) {
         if (window !== undefined && user !== undefined) {
           const token = localStorage.getItem('token'); 
           if ( typeof user === 'string'){
-            console.log(user)
             if (user !== token){
             logout();
           }

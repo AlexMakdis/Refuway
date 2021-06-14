@@ -1,6 +1,6 @@
 import {CloudinaryContext, Image} from 'cloudinary-react';
 
-export default function CloudImage({publicId}) {
+export default function CloudImage({publicId, ...props}) {
   return (
     <>
         <CloudinaryContext cloudName="refuway">

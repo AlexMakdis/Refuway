@@ -48,7 +48,6 @@ export default function Data2({}) {
         if (window !== undefined && user !== undefined) {
           const token = localStorage.getItem('token'); 
           if ( typeof user === 'string'){
-            console.log(user)
             if (user !== token){
             logout();
           }
@@ -111,7 +110,6 @@ export default function Data2({}) {
     }  
   `;
     const org = useQuery(GET_DATABYID);
-    console.log(org)
     
     const UPDATE = gql`
     mutation updateData($id: ID!, $text: String!, $title: String!,  $dataLi: String!, $description: String!, $imgURL: String!, $prevQuestionLi: String!) {

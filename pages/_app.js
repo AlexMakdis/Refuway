@@ -18,6 +18,7 @@ function MyApp({ Component, pageProps, router }) {
         <AuthProvider>
           <Head>
             <title>{headTitle === "" ? "Refuway" : `Refuway: ${headTitle}`}</title>
+            <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
           </Head>
           <motion.div key={router.route} initial="pageInitial" animate="pageAnimate" variants={{
             pageInitial: {

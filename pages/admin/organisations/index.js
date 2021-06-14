@@ -49,7 +49,6 @@ export default function Organisations({organisations}) {
         if (window !== undefined && user !== undefined) {
           const token = localStorage.getItem('token'); 
           if ( typeof user === 'string'){
-            console.log(user)
             if (user !== token){
             logout();
           }
@@ -60,7 +59,6 @@ export default function Organisations({organisations}) {
 
 
 
-  console.log(organisations)
     const [image, setImage ] = useState("");
     const [ url, setUrl ] = useState("");
     const [ loading1, setLoading1 ] = useState("Upload");
