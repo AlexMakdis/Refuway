@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useMutation, gql } from '@apollo/client';
 import client from "../../../apollo-client";
 import { useAuth } from "../../../context";
 import Login from "../../../components/Login";

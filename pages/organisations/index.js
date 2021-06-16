@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { gql } from "@apollo/client";
 import client from "../../apollo-client";
 import Header from "../../components/header";
@@ -33,11 +32,11 @@ export default function Organisations({organisations}) {
       <div  className="dropdownOrganisations dropdownData mx-auto w-4/6 p-4 overflow-hidden animate__animated">
             <div className="grid grid-cols-3 gap-8">
             {org.map((organisation) => (
-              <div className=" text-center shadow-md rounded-xl p-8 font-bold text-xs hover:bg-green hover:text-white transition duration-500 ease-in-out cursor-pointer"  key={organisation.id}>
+              <div className=" text-center shadow-md rounded-xl p-0 md:p-8 font-bold text-xs hover:bg-green hover:text-white transition duration-500 ease-in-out cursor-pointer"  key={organisation.id}>
                 <Link href={{ pathname: '/organisations/[id]', query: { object: JSON.stringify(organisation) } }} as={`/organisations/${organisation.id}`} passHref>
-                  <div>
+                  <div className="flex flex-col justify-center orgItemFit">
                 <OrgImage publicId={organisation.imgURL} />
-                <p className="text-lg font-bold text-blue">{organisation.title}</p>
+                <p className="text-xs md:text-lg font-bold text-blue">{organisation.title}</p>
                 </div>
                 </Link>
               </div>

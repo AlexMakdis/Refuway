@@ -18,6 +18,8 @@
         position: absolute;
         top: 0px;
         right: 0px;
+        z-index: 10;
+        min-height: 650px;
         height: 100vh;
         width: 40%!important;
         background-color: #1F2041;
@@ -26,7 +28,6 @@
         display: none!important;
         transform: translateX(100%);
         transition: transform 0.5s ease-in;
-        z-index: 1;
         border-radius: 30px 0px 0px 30px;
     }
     .nav-links li{
@@ -48,7 +49,7 @@
     }
     .burger{
         display: block;
-        z-index: 1;
+        z-index: 11;
     }
 }
 

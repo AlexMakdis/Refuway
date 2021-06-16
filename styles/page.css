@@ -26,3 +26,13 @@
 .dropdownText{
 	z-index: -1;
 }
+
+.orgItemFit > div{
+	margin-left: auto;
+	margin-right: auto;
+	width: fit-content;
+}
+
+.orgImageWidth > img{
+	border-radius: 50%;
+}

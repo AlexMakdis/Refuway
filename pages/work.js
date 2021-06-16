@@ -1,5 +1,3 @@
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
 import { gql } from "@apollo/client";
 import client from "../apollo-client";
 import Header from "../components/header";
@@ -8,8 +6,6 @@ import Link from 'next/link';
 import OrgImage from "../components/OrgImage";
 
 export default function Work({organisations}) {
-  
-
   const org = organisations.filter(organisations => organisations.category === "WORK");
 
   const showData = (dropdownClass, arrow) => {
@@ -23,7 +19,6 @@ export default function Work({organisations}) {
       dropdownData.classList.toggle("animate__fadeIn")
       dropdownDataArrow.classList.toggle("rotate")
   }
-
 
 
   return (
@@ -113,11 +108,11 @@ export default function Work({organisations}) {
           <div style={{display:"none"}} className="dropdownOrganisations dropdownData mx-auto w-4/6 p-4 overflow-hidden animate__animated">
             <div className="grid grid-cols-3 gap-8">
             {org.map((organisation) => (
-              <div className=" text-center shadow-md rounded-xl p-8 font-bold text-xs hover:bg-green hover:text-white transition duration-500 ease-in-out cursor-pointer"  key={organisation.id}>
+              <div className=" text-center shadow-md rounded-xl p-0 md:p-8 font-bold text-xs hover:bg-green hover:text-white transition duration-500 ease-in-out cursor-pointer"  key={organisation.id}>
                 <Link href={{ pathname: '/organisations/[id]', query: { object: JSON.stringify(organisation) } }} as={`/organisations/${organisation.id}`} passHref>
-                  <div>
-                <OrgImage publicId={organisation.imgURL} />
-                <p className="text-lg font-bold text-blue">{organisation.title}</p>
+                  <div className="flex flex-col justify-center orgItemFit">
+                    <OrgImage publicId={organisation.imgURL} />
+                    <p className="text-xs md:text-lg font-bold text-blue">{organisation.title}</p>
                 </div>
                 </Link>
               </div>

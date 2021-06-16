@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useQuery, useMutation, gql } from '@apollo/client';
-import client from "../../../../apollo-client";
 import { useAuth } from "../../../../context";
 import Login from "../../../../components/Login";
 
@@ -9,7 +8,6 @@ import Link from 'next/link';
 import { Formik, useField, Form, FieldArray, Field } from 'formik';
 import * as Yup from 'yup';
 
-import { useRouter } from 'next/router';
 
 
 const CustomTextInput = ({ label, ...props}) => {

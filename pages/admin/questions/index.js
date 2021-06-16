@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useMutation, gql } from '@apollo/client';
 import client from "../../../apollo-client";
 import { useAuth } from "../../../context";
 import Login from "../../../components/Login";
@@ -78,11 +78,7 @@ export default function Questions({questions}) {
     }
 
 
-    const [text1, setText] = useState('');
-    const [questionLi1, setQuestionLi] = useState('');
     const [imgURL1, setImgURL] = useState('');
-    const [category1, setCategory] = useState('');
-    const [prevQuestionLi1, setPrevQuestionLi] = useState('');
     const [answers1, setAnswers1] = useState(["test", "test2"]);
 
     const ADD = gql`
