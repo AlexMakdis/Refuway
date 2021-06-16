@@ -258,7 +258,7 @@ export default function Questions({questions}) {
   );
 }
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
     const { data: questions } = await client.query({
         query: gql`
           query Questions {

@@ -242,7 +242,7 @@ export default function Organisations({organisations}) {
   );
 }
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
     const { data: organisations } = await client.query({
         query: gql`
           query organisations {
